@@ -48,5 +48,5 @@ def login_user():
         return jsonify({"status" : False, "result" : None}), 200
     
 if __name__ == '__main__':
-    print("Server is running on port 5000")
-    app.run(debug=False, host='192.168.107.59')
+    print("Server is running on port 5001")
+    app.run(debug=False, port=5001)
