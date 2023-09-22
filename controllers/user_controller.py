@@ -33,7 +33,7 @@ class UserController(object):
         result = self.user_model.find_one({"email": user_email, "password": user_password})
 
         if result is not None:
-            return "User created", False
+            return "User is already exist!", False
         else:
             self.user_model.create(user_item)
             token = jwt.encode({"username": user_item["name"], "email" : user_item["email"], 
@@ -51,4 +51,4 @@ class UserController(object):
                                 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=TOKEN_EXPIRE)}, env_vars["SECRET_KEY"], algorithm='HS256')
             return token, True
         else:
-            return None, False
+            return "Email or Password is incorrect!", False
