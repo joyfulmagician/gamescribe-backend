@@ -45,7 +45,7 @@ def login_user():
     if res:
         return jsonify({"status" : True, "token" : token}), 200
     else:
-        return jsonify({"status" : False, "result" : None}), 200
+        return jsonify({"status" : False, "result" : token}), 200
     
 if __name__ == '__main__':
     print("Server is running on port 5000")
