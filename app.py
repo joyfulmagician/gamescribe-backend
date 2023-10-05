@@ -4,8 +4,9 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from bson import ObjectId
 from datetime import datetime
-
 from controllers.user_controller import UserController
+
+import controllers.generate_content as GenerateContent
 
 app = Flask(__name__)
 
@@ -47,6 +48,15 @@ def login_user():
     else:
         return jsonify({"status" : False, "result" : token}), 200
     
+@app.route('/generate_content', methods=['post'])
+def generate_content():
+    data = request.get_json()
+    user_input = data["user_input"]
+    content = GenerateContent.generate_content(user_input)
+    return {
+        "result" : content
+    }, 200
+
 if __name__ == '__main__':
     print("Server is running on port 5000")
     app.run(debug=False)
