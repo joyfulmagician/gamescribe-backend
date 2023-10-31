@@ -53,6 +53,17 @@ def generate_content():
     data = request.get_json()
     user_input = data["user_input"]
     content = GenerateContent.generate_content(user_input)
+    print(f"=======generated content : {content}")
+    return {
+        "result" : content
+    }, 200
+
+@app.route('/generate_question', methods=['post'])
+def generate_question():
+    data = request.get_json()
+    user_input = data["user_input"]
+    content = GenerateContent.generate_question(user_input)
+    print(f"=======generated question : {content}")
     return {
         "result" : content
     }, 200
