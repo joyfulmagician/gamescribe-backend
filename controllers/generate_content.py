@@ -9,64 +9,133 @@ import openai
 
 env_vars = dotenv_values('.env')
 openai.api_key = env_vars["OPENAI_API_KEY"]
-
-current_directory = os.getcwd()
-file_path = os.path.join(current_directory, "data/data.json")
-
-with open(file_path, 'r') as dataFile:
-    data = json.load(dataFile)
-
-text = ""
-for item in data:
-    text += "{"
-    for key, value in item.items():
-        text += f"Monster { key } : { value }" + "\n"
-    text += "}\n\n"
         
-dataFile.close()
-prompt = f"Monster Data: \n{text}\n\nPlease provide a human readable content of this data. Should be understandable to 18 year old. You must reference this data for generating content. There are lots of monsters information and you can generate the monster description based on this data. The data consists of objects of many monsters, and there are many different monsters in the data. Therefore, based on the user's message, you find a suitable monster in the data and write a description of that monster based on that monster's information. Please don't make unreal data. You have to make the content from data. It allows users to feel a sense of life and vividly describes the characteristics of the monster.\n\n"
+content_prompt = f"You are a monster content generator. You can create descriptions and stat blocks. When you create a description, you have to include the stat block. If the user message is not related with monster specialist you answer only 'Introducing a monster...' or blank message."
 
-sample_message = [
+key_array = ["Environment", "Size", "Appearance", "Attack Mode", "Movement Speed"]
+key_array = [str(item) for item in key_array]
+key_string = ", ".join(key_array)
+question_prompt = f"You are a helpful AI assistant that makes the questions for monster content and stat. You can create questions for generating monster content. {key_string}. They are keys that help create the monster's content. If you can know about the key from user's message, you have to ask other keys. And if you know about all keys from user's messages, you don't ask anymore and answer only 'Thanks'."
+
+
+quiz_sample_message = [
+    {
+        "role": "system",
+        "content": question_prompt
+    },
+    {
+        "role": "user",
+        "content": "Hi"
+    },
+    {
+        "role": "assistant",
+        "content": "Hello! How can I assist you today?"
+    },
+    {
+        "role": "user",
+        "content": "I wanna build a monster content."
+    },
+    {
+        "role": "assistant",
+        "content": "That's great! I can help you with that. To get started, could you please provide me with some information about the monster you would like to create? Specifically, I need to know about the monster's environment, size, and appearance."
+    },
+    {
+        "role": "user",
+        "content": "Live in forest and have wings"
+    },
+    {
+        "role": "assistant",
+        "content": "Great! We have the environment and appearance covered. Now, could you please let me know the size of the monster? Is it small, medium, or large?"
+    },
+    {
+        "role": "user",
+        "content": "I'm not sure"
+    },
+    {
+        "role": "assistant",
+        "content": "No problem! I can help you determine the size of the monster based on its environment and appearance. Since it lives in the forest and has wings, it could be a medium-sized creature that is agile and capable of flying through the trees. Does that sound suitable for your monster?"
+    },
+    {
+        "role": "user",
+        "content": "Sure!"
+    },
+    {
+        "role": "assistant",
+        "content": "Thanks!"
+    }
+]
+
+content_sample_message = [
             {
                 "role": "system",
-                "content": prompt
+                "content": content_prompt
             },
             {
                 "role": "user",
-                "content": "It should be large, have wings, and be similar to a dradon."
+                "content": "It should be large, have wings, and be similar to a dragon."
             },
             {
                 "role": "assistant",
                 "content": """
-                    Introducing the Draegonspire, a fearsome and majestic creature that prowls the shadowed realms of your game's world. Standing at a towering height with scales as dark as midnight, the Draegonspire commands both awe and terror. Its eyes, blazing orbs of molten gold, possess an uncanny intelligence that pierces through the deepest corners of your soul.
+                    Description:
+                    The Draconian Monarch is a colossal creature that strikes fear into the hearts of all who lay eyes upon it. Standing at a towering height of 30 feet, this majestic beast possesses a muscular and serpentine body covered in shimmering scales that glisten in the sunlight. Its wings, spanning an impressive 50 feet, are adorned with intricate patterns resembling stained glass, giving it an ethereal and otherworldly appearance. The Draconian Monarch's head features a pair of piercing, intelligent eyes that glow with an intense, fiery hue, and its mouth is filled with rows of razor-sharp teeth capable of rending even the toughest armor.
 
-                    With wings that stretch wide and powerful, the Draegonspire dominates the skies, casting an ominous silhouette as it soars. Its talons, sharp as obsidian blades, can tear through even the hardiest of defenses, making it a formidable adversary. Yet, it's not just its physical prowess that makes the Draegonspire a creature to be reckoned with. Legends speak of its ability to manipulate the very elements, conjuring storms that darken the sun and crack the earth.
+                    Stat Block:
+                    - Size: Large
+                    - Hit Points: 300
+                    - Armor Class: 18
+                    - Speed: 40 feet, fly 80 feet
+                    - Strength: 22 (+6)
+                    - Dexterity: 14 (+2)
+                    - Constitution: 20 (+5)
+                    - Intelligence: 16 (+3)
+                    - Wisdom: 14 (+2)
+                    - Charisma: 18 (+4)
 
-                    But within this terrifying exterior lies a complexity that challenges expectations. Whispers carried by the wind claim that the Draegonspire is a guardian of forgotten knowledge, a sentinel of ancient secrets buried deep within the heart of the world. Some say it can be appeased with offerings of precious gems and rare herbs, and in return, it imparts hidden wisdom to those who prove themselves worthy.
-
-                    Venture forth, for encountering the Draegonspire will test your courage, wit, and strategy. Will you face it as an adversary, driven by the desire to conquer, or will you seek to unravel the enigma it embodies and uncover the truths that lie beneath its majestic exterior? The choice is yours, as you navigate the uncharted territories where legends and reality intertwine.
+                    Abilities:
+                    - Fire Breath: The Draconian Monarch can unleash a devastating cone of fire, dealing 6d10 fire damage to all creatures within a 60-foot cone. Targets must make a Dexterity saving throw (DC 17) to halve the damage.
+                    - Wing Buffet: With a mighty flap of its wings, the Draconian Monarch creates a powerful gust of wind, forcing all creatures within a 20-foot radius to make a Strength saving throw (DC 18) or be knocked prone.
+                    - Frightful Presence: Any creature within 120 feet of the Draconian Monarch must succeed on a Wisdom saving throw (DC 16) or become frightened for 1 minute.
+                    - Legendary Resistance (3/Day): If the Draconian Monarch fails a saving throw, it can choose to succeed instead.
+                    - Multiattack: The Draconian Monarch can make three attacks per round, choosing from its bite, claw, and tail attacks.
+                    - Bite: Melee Weapon Attack, +10 to hit, reach 10 ft., one target. Hit: 2d10 + 6 piercing damage.
+                    - Claw: Melee Weapon Attack, +10 to hit, reach 10 ft., one target. Hit: 2d6 + 6 slashing
                 """
+            },
+            {
+                "role": "user",
+                "content": "Hi"
+            },
+            {
+                "role": "assistant",
+                "content": "Introducing a monster..."
+            },
+            {
+                "role": "user",
+                "content": "I wanna build a monster content"
+            },
+            {
+                "role": "assistant",
+                "content": "Introducing a monster..."
             }
         ]
 
 def generate_content(user_input):
 
-    print(prompt)
-
-    sample_message.append({
+    content_sample_message.append({
         "role": "user",
         "content": user_input
     })
 
     response = openai.ChatCompletion.create(
         model = "gpt-3.5-turbo-16k",
-        messages = sample_message
+        messages = content_sample_message
     )
 
     if response and response.choices:
         assistant_reply = response.choices[0].message["content"]
 
-        sample_message.append({
+        content_sample_message.append({
             "role": "assistant",
             "content": assistant_reply
         })
@@ -75,5 +144,28 @@ def generate_content(user_input):
     else:
         return "Error"
 
-def generate_question():
+def generate_question(user_input):
+    
+    quiz_sample_message.append({
+        "role": "user",
+        "content": user_input
+    })
+
+    response = openai.ChatCompletion.create(
+        model = "gpt-3.5-turbo-16k",
+        messages = quiz_sample_message
+    )
+
+    if response and response.choices:
+        assistant_reply = response.choices[0].message["content"]
+
+        quiz_sample_message.append({
+            "role": "assistant",
+            "content": assistant_reply
+        })
+
+        return assistant_reply
+    else:
+        return "Error"
+
     pass
