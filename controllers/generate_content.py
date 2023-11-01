@@ -71,20 +71,7 @@ content_sample_message = [
             },
             {
                 "role": "user",
-                "content": "Hi"
-            },
-            {
-                "role": "assistant",
-                "content": ""
-            },
-            {
-                "role": "user",
-                "content": "I wanna build a monster content"
-            },
-            {
-                "role": "assistant",
-                "content": """
-                    ```
+                "content": """Hello! I need you to generate monster content and return it to me as html code. Here's an example: If I give you liek that: 'Monster live in forest and have wings', I need you to say : 
                     <div class="text-left">
                         <div class="monster-title mb-4">Winged Beast</div>
                         <div class="monster-subtitle">This monstrous creature has a pair of large, leathery wings that span an impressive distance. It uses these wings to soar through the skies with incredible speed and agility.</div>
@@ -230,9 +217,11 @@ content_sample_message = [
                             </div>
 
                         </div>
-                    </div>
-                    ```
-                """
+                    </div> """
+            },
+            {
+                "role": "assistant",
+                "content": "Sure thing!"
             }
         ]
 
