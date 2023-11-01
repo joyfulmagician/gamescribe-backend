@@ -10,8 +10,6 @@ import openai
 env_vars = dotenv_values('.env')
 openai.api_key = env_vars["OPENAI_API_KEY"]
         
-content_prompt = f"You are a monster content generator. You can create descriptions and stat blocks. When you create a description, you have to include the stat block. If the user message is not related with monster specialist you answer only 'Introducing a monster...' or blank message."
-
 key_array = ["Environment", "Size", "Appearance", "Attack Mode", "Movement Speed"]
 key_array = [str(item) for item in key_array]
 key_string = ", ".join(key_array)
@@ -65,6 +63,7 @@ quiz_sample_message = [
     }
 ]
 
+content_prompt = "You are a monster content generator. You can create descriptions and stat blocks with html styled code using tailwind css or desired CSS. When you create a description, you have to include the stat block. For the ability part, you can use short words like 'Str', 'Dex' for 'Strength', 'Dexterity' and so on. If the user message is not related with monster specialist you answer only 'Introducing a monster...' or blank message."
 content_sample_message = [
             {
                 "role": "system",
@@ -77,29 +76,154 @@ content_sample_message = [
             {
                 "role": "assistant",
                 "content": """
-                    Description:
-                    The Draconian Monarch is a colossal creature that strikes fear into the hearts of all who lay eyes upon it. Standing at a towering height of 30 feet, this majestic beast possesses a muscular and serpentine body covered in shimmering scales that glisten in the sunlight. Its wings, spanning an impressive 50 feet, are adorned with intricate patterns resembling stained glass, giving it an ethereal and otherworldly appearance. The Draconian Monarch's head features a pair of piercing, intelligent eyes that glow with an intense, fiery hue, and its mouth is filled with rows of razor-sharp teeth capable of rending even the toughest armor.
+                    ```
+                    <div class="text-left">
+                        <div class="monster-title mb-4">Winged Beast</div>
+                        <div class="monster-subtitle">This monstrous creature has a pair of large, leathery wings that span an impressive distance. It uses these wings to soar through the skies with incredible speed and agility.</div>
 
-                    Stat Block:
-                    - Size: Large
-                    - Hit Points: 300
-                    - Armor Class: 18
-                    - Speed: 40 feet, fly 80 feet
-                    - Strength: 22 (+6)
-                    - Dexterity: 14 (+2)
-                    - Constitution: 20 (+5)
-                    - Intelligence: 16 (+3)
-                    - Wisdom: 14 (+2)
-                    - Charisma: 18 (+4)
+                        <div class="section-body">
+                            <hr class="section-divider mt-5 mb-5">
 
-                    Abilities:
-                    - Fire Breath: The Draconian Monarch can unleash a devastating cone of fire, dealing 6d10 fire damage to all creatures within a 60-foot cone. Targets must make a Dexterity saving throw (DC 17) to halve the damage.
-                    - Wing Buffet: With a mighty flap of its wings, the Draconian Monarch creates a powerful gust of wind, forcing all creatures within a 20-foot radius to make a Strength saving throw (DC 18) or be knocked prone.
-                    - Frightful Presence: Any creature within 120 feet of the Draconian Monarch must succeed on a Wisdom saving throw (DC 16) or become frightened for 1 minute.
-                    - Legendary Resistance (3/Day): If the Draconian Monarch fails a saving throw, it can choose to succeed instead.
-                    - Multiattack: The Draconian Monarch can make three attacks per round, choosing from its bite, claw, and tail attacks.
-                    - Bite: Melee Weapon Attack, +10 to hit, reach 10 ft., one target. Hit: 2d10 + 6 piercing damage.
-                    - Claw: Melee Weapon Attack, +10 to hit, reach 10 ft., one target. Hit: 2d6 + 6 slashing
+                            <div class="flex gap-4 item-start mt-2">
+                                <span class="stat-title">Armor Class</span>
+                                <span class="stat-subtitle">22</span>
+                            </div>
+                
+                            <div class="flex gap-4 item-start mt-2">
+                                <span class="stat-title">Hit Points</span>
+                                <span class="stat-subtitle">370 % (21d20 + 146)</span>
+                            </div>
+                
+                            <div class="flex gap-4 item-start mt-2">
+                                <span class="stat-title">Speed</span>
+                                <span class="stat-subtitle">40 ft., fly 80 ft., swim 40 ft.</span>
+                            </div>
+                        </div>
+
+                        <div class="section-body">
+                            <div class="section-title">
+                                Abilities
+                            </div>
+
+                            <hr class="section-divider mt-5 mb-5">
+
+                            <div class="ability">
+                                <div class="stat-title ability-label">Str</div>
+                                <div class="stat-subtitle">18 (+4)</div>
+                            </div>
+                            <div class="ability">
+                                <div class="stat-title ability-label">Dex</div>
+                                <div class="stat-subtitle">16 (+3)</div>
+                            </div>
+                            <div class="ability">
+                                <div class="stat-title ability-label">Con</div>
+                                <div class="stat-subtitle">16 (+3)</div>
+                            </div>
+                            <div class="ability">
+                                <div class="stat-title ability-label">Int</div>
+                                <div class="stat-subtitle">10 (+0)</div>
+                            </div>
+                            <div class="ability">
+                                <div class="stat-title ability-label">Wis</div>
+                                <div class="stat-subtitle">12 (+1)</div>
+                            </div>
+                            <div class="ability">
+                                <div class="stat-title ability-label">Cha</div>
+                                <div class="stat-subtitle">8 (-1)</div>
+                            </div>
+                        </div>
+
+                        <div class="section-body">
+                            <hr class="section-divider mt-5 mb-5">
+
+                            <div class="flex gap-4 item-start mt-2">
+                                <span class="stat-title">Alignment</span>
+                                <span class="stat-subtitle">Chaotic Evil</span>
+                            </div>
+
+                            <div class="flex gap-4 item-start mt-2">
+                                <span class="stat-title">Skills</span>
+                                <span class="stat-subtitle">Perception +5, Stealth +6</span>
+                            </div>
+
+                            <div class="flex gap-4 item-start mt-2">
+                                <span class="stat-title">Damage Resistances</span>
+                                <span class="stat-subtitle">Bludgeoning, Piercing, and Slashing from Nonmagical Attacks</span>
+                            </div>
+
+                            <div class="flex gap-4 item-start mt-2">
+                                <span class="stat-title">Damage Immunities</span>
+                                <span class="stat-subtitle">Poison</span>
+                            </div>
+
+                            <div class="flex gap-4 item-start mt-2">
+                                <span class="stat-title">Condition Immunities</span>
+                                <span class="stat-subtitle">Charmed, Deafened, Frightened, Petrified, Prone</span>
+                            </div>
+
+                            <div class="flex gap-4 item-start mt-2">
+                                <span class="stat-title">Senses</span>
+                                <span class="stat-subtitle">Darkvision 60 ft., passive Perception 15</span>
+                            </div>
+
+                            <div class="flex gap-4 item-start mt-2">
+                                <span class="stat-title">Languages</span>
+                                <span class="stat-subtitle">Common, Draconic</span>
+                            </div>
+
+                            <div class="flex gap-4 item-start mt-2">
+                                <span class="stat-title">Challenge</span>
+                                <span class="stat-subtitle">5 (1,800 XP)</span>
+                            </div>
+                        </div>
+
+                        <div class="section-body">
+                            <div class="section-title">
+                                Actions
+                            </div>
+
+                            <hr class="section-divider mt-5 mb-5">
+
+                            <div class="mt-2">
+                                <span class="stat-title action-title">Multiattack (Vampire Form Only).</span>
+                                <span class="stat-subtitle">Strahd makes three attacks, only one of which can be a bite attack.</span>
+                            </div>
+
+                            <div class="mt-2">
+                                <span class="stat-title action-title">Scimitar.</span>
+                                <span class="stat-subtitle">Melee Weapon Attack: +13 to hit, reach 10 ft., one target. Hit: 9 (3d6 + 10) slashing damage.</span>
+                            </div>
+
+                            <div class="mt-2">
+                                <span class="stat-title action-title">Cel Flamand.</span>
+                                <span class="stat-subtitle">Melee weapon attack: +13 to hit, reach 5 ft, one target, Hit: (3d4 + 16) Piercing Damage, and (2d6 + 8) Poison Damage</span>
+                            </div>
+
+                            <div class="mt-2">
+                                <span class="stat-title action-title">Claws.</span>
+                                <span class="stat-subtitle">Melee weapon attack: +9 to hit, reach 5 ft. one target, Hit: (2d4 +4) piercing damage. the target of this attack, when hit, must make a DC 15 CON save at the end of each of their turns to not take 2d4 damage from internal bleeding. if Strahd lands this attack from a flank, the creature must make a DC 12 CON save to suffer the paralyzed condition.</span>
+                            </div>
+
+                            <div class="mt-2">
+                                <span class="stat-title action-title">Bite.</span>
+                                <span class="stat-subtitle">Melee Weapon Attack: +10 to hit, reach 5 ft (can lunge upto 15 feet to bite), one willing creature, or a creature that is grappled, incapacitated, Stunned, Surprised or restrained. Hit: 7 (2d6 + 4) piercing damage plus 10 (3d6) necrotic damage. The target’s hit point maximum is reduced by an amount equal to the necrotic damage taken, and Strahd regains hit points equal to that amount. The reduction lasts until the target finishes a long rest. The target dies if its hit point maximum is reduced to 0. A humanoid slain in this way and then buried in the ground rises the following night as a vampire spawn under Strahd’s control.</span>
+                            </div>
+
+                            <div class="mt-2">
+                                <span class="stat-title action-title">Charm</span>
+                                <span class="stat-subtitle">Strahd targets one humanoid he can see within 30 feet of him. If the target can see Strahd, the target must succeed on a DC 19 Wisdom saving throw against this magic or be charmed. The charmed target regards Strahd as a trusted friend to be heeded and protected. The target isn’t under Strahd’s control, but it takes Strahd’s requests and actions in the most favorable way and lets Strahd bite it.
+                                    
+                                Each time Strahd or his companions do anything harmful to the target, it can repeat the saving throw, ending the effect on itself on a success. Otherwise, the effect lasts 24 hours or until Strahd is destroyed, is on a different plane of existence than the target, or takes a bonus action to end the effect.</span>
+                            </div>
+
+                            <div class="mt-2">
+                                <span class="stat-title action-title">Children of the Night (1/Day).</span>
+                                <span class="stat-subtitle">Strahd magically calls 2d4 swarms of bats or swarms of rats. While outdoors, Strahd can call 3d6 wolves instead. The called creatures arrive in 1d4 rounds, acting as allies of Strahd and obeying his spoken commands. The beasts remain for 1 hour, until Strahd dies, or until he dismisses them as a bonus action.</span>
+                            </div>
+
+                        </div>
+                    </div>
+                    ```
                 """
             },
             {
@@ -108,7 +232,7 @@ content_sample_message = [
             },
             {
                 "role": "assistant",
-                "content": "Introducing a monster..."
+                "content": ""
             },
             {
                 "role": "user",
@@ -116,16 +240,20 @@ content_sample_message = [
             },
             {
                 "role": "assistant",
-                "content": "Introducing a monster..."
+                "content": ""
             }
         ]
 
 def generate_content(user_input):
 
+    print(f"1. content_sample_message length: {len(content_sample_message)}")
+
     content_sample_message.append({
         "role": "user",
         "content": user_input
     })
+
+    print(f"2. content_sample_message length: {len(content_sample_message)}")
 
     response = openai.ChatCompletion.create(
         model = "gpt-3.5-turbo-16k",
@@ -140,7 +268,23 @@ def generate_content(user_input):
             "content": assistant_reply
         })
 
-        return assistant_reply
+        print(f"3. content_sample_message length: {len(content_sample_message)}")
+
+        # html_code = re.search(pattern, assistant_reply, re.DOTALL)
+        start_index = assistant_reply.find('<div class="text-left">')
+        if start_index != -1:
+            end_index = assistant_reply.rfind("</div>", start_index)
+
+            if end_index != -1:
+                html_code = assistant_reply[start_index:end_index + 6]
+                print(f"Result : {html_code}")
+                return html_code
+            else:
+                return ""
+        else:
+            return ""
+
+        # return assistant_reply
     else:
         return "Error"
 
