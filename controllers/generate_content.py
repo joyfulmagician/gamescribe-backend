@@ -227,14 +227,10 @@ content_sample_message = [
 
 def generate_content(user_input):
 
-    print(f"1. content_sample_message length: {len(content_sample_message)}")
-
     content_sample_message.append({
         "role": "user",
         "content": user_input
     })
-
-    print(f"2. content_sample_message length: {len(content_sample_message)}")
 
     response = openai.ChatCompletion.create(
         model = "gpt-3.5-turbo-16k",
@@ -249,8 +245,6 @@ def generate_content(user_input):
             "content": assistant_reply
         })
 
-        print(f"3. content_sample_message length: {len(content_sample_message)}")
-
         # html_code = re.search(pattern, assistant_reply, re.DOTALL)
         start_index = assistant_reply.find('<div class="text-left">')
         if start_index != -1:
@@ -258,7 +252,6 @@ def generate_content(user_input):
 
             if end_index != -1:
                 html_code = assistant_reply[start_index:end_index + 6]
-                print(f"Result : {html_code}")
                 return html_code
             else:
                 return ""

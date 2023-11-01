@@ -53,7 +53,7 @@ def generate_content():
     data = request.get_json()
     user_input = data["user_input"]
     content = GenerateContent.generate_content(user_input)
-    print(f"=======generated content : {content}")
+    print(f"=======generated content length: {len(content)}")
     return {
         "result" : content
     }, 200
