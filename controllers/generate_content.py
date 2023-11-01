@@ -71,7 +71,15 @@ content_sample_message = [
             },
             {
                 "role": "user",
-                "content": "It should be large, have wings, and be similar to a dragon."
+                "content": "Hi"
+            },
+            {
+                "role": "assistant",
+                "content": ""
+            },
+            {
+                "role": "user",
+                "content": "I wanna build a monster content"
             },
             {
                 "role": "assistant",
@@ -225,22 +233,6 @@ content_sample_message = [
                     </div>
                     ```
                 """
-            },
-            {
-                "role": "user",
-                "content": "Hi"
-            },
-            {
-                "role": "assistant",
-                "content": ""
-            },
-            {
-                "role": "user",
-                "content": "I wanna build a monster content"
-            },
-            {
-                "role": "assistant",
-                "content": ""
             }
         ]
 
