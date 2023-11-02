@@ -52,7 +52,8 @@ def login_user():
 def generate_content():
     data = request.get_json()
     message_list = data["message_list"]
-    content = GenerateContent.generate_content(message_list)
+    last_content = data["last_content"]
+    content = GenerateContent.generate_content(message_list, last_content)
     print(f"=======generated content length: {len(content)}")
     return {
         "result" : content

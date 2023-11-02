@@ -30,7 +30,7 @@ quiz_sample_message = [
     },
 ]
 
-content_prompt = "You are a monster content generator. You can create descriptions and stat blocks with html styled code using tailwind css or desired CSS. When you create a description, you have to include the stat block. For the ability part, you can use short words like 'Str', 'Dex' for 'Strength', 'Dexterity' and so on. If the user message is not related with monster specialist you answer only 'Introducing a monster...' or blank message."
+content_prompt = "You are a monster content generator. You can create descriptions and stat blocks with html styled code using tailwind css or desired CSS. When you create a description, you have to include the stat block. For the ability part, you can use short words like 'Str', 'Dex' for 'Strength', 'Dexterity' and so on. If you get additional features, you can update the monster content."
 content_sample_message = [
     {
         "role": "system",
@@ -192,8 +192,11 @@ content_sample_message = [
     }
 ]
 
-def generate_content(message_list):
+def generate_content(message_list, last_content):
     messages = content_sample_message + message_list
+
+    if last_content != "":
+        messages[-1]["content"] += "This is last generated monster content : " + last_content
 
     response = openai.ChatCompletion.create(
         model = "gpt-3.5-turbo-16k",
