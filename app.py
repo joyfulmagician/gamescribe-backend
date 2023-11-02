@@ -51,8 +51,8 @@ def login_user():
 @app.route('/generate_content', methods=['post'])
 def generate_content():
     data = request.get_json()
-    user_input = data["user_input"]
-    content = GenerateContent.generate_content(user_input)
+    message_list = data["message_list"]
+    content = GenerateContent.generate_content(message_list)
     print(f"=======generated content length: {len(content)}")
     return {
         "result" : content
@@ -61,8 +61,8 @@ def generate_content():
 @app.route('/generate_question', methods=['post'])
 def generate_question():
     data = request.get_json()
-    user_input = data["user_input"]
-    content = GenerateContent.generate_question(user_input)
+    message_list = data["message_list"]
+    content = GenerateContent.generate_question(message_list)
     print(f"=======generated question : {content}")
     return {
         "result" : content
