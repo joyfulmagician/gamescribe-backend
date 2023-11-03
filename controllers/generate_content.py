@@ -2,6 +2,7 @@ import os
 from os import environ
 from urllib.parse import urlparse
 from dotenv import dotenv_values
+from models.monsters import Monsters
 
 import re
 import json
@@ -9,6 +10,8 @@ import openai
 
 env_vars = dotenv_values('.env')
 openai.api_key = env_vars["OPENAI_API_KEY"]
+
+monster_model = Monsters()
         
 key_array = ["Environment", "Size", "Appearance", "Attack Mode", "Movement Speed"]
 key_array = [str(item) for item in key_array]
@@ -213,6 +216,8 @@ def generate_content(message_list, last_content):
 
             if end_index != -1:
                 html_code = assistant_reply[start_index:end_index + 6]
+                monster_item = { "content" : html_code }
+                monster_model.create(monster_item)
                 return html_code
             else:
                 return ""
