@@ -114,7 +114,7 @@ content_sample_message = [
     },
     {
         "role": "user",
-        "content": f"Hello! I need you to generate monster content and return it to me as homebrewery markdown content. The homebrewery markdown content must start with &&& and end with &&&. Here's an example: If I give you like that: 'Monster live in forest', I need you to say like that: '&&&{markdown_sample}&&&'"
+        "content": f"Hello! I need you to generate monster content and return it to me as homebrewery markdown content. Here's an example: If I give you like that: 'Monster live in forest', I need you to say like that: <monster>{markdown_sample}</monster>"
     },
     {
         "role": "assistant",
@@ -130,7 +130,8 @@ def generate_content(message_list, last_content):
 
     response = openai.ChatCompletion.create(
         model = "gpt-3.5-turbo-16k",
-        messages = messages
+        messages = messages,
+
     )
 
     if response and response.choices:
@@ -138,12 +139,11 @@ def generate_content(message_list, last_content):
 
         print(f"=============Assistant reply: {assistant_reply}")
 
-        pattern = r'&&&(.*?)&&&'
+        pattern = r'<monster>(.*?)</monster>'
         result = re.search(pattern, assistant_reply, re.DOTALL)
         if result:
             monster_item = { "content": result.group(1), "prompt": message_list }
-            monster_model.create(monster_item)
-            print(f"----------------------Generated monster content: {result.group(1)}")
+            insert_res = monster_model.create(monster_item)
             return result.group(1)
         else:
             return ""
@@ -165,4 +165,10 @@ def generate_question(message_list):
     else:
         return "Error"
 
-    pass
+def save_updated_content(message_list, updated_content):
+    monster_item = { "content": updated_content, "prompt": message_list }
+    inserted_id = monster_model.create(monster_item)
+
+    if inserted_id:
+        return True
+    return False

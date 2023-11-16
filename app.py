@@ -67,6 +67,16 @@ def generate_question():
         "result" : content
     }, 200
 
+@app.route('/save_updated_content', methods=['post'])
+def save_updated_content():
+    data = request.get_json()
+    message_list = data["message_list"]
+    updated_content = data["updated_content"]
+    res = GenerateContent.save_updated_content(message_list, updated_content )
+    return {
+        "result": res
+    }, 200
+
 if __name__ == '__main__':
     print("Server is running on port 5000")
     app.run(debug=False)
