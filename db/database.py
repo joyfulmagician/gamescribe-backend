@@ -14,7 +14,7 @@ class Database(object):
         element["created"] = datetime.now()
         element["updated"] = datetime.now()
         inserted = self.db[collection_name].insert_one(element)  # insert data to db
-        return str(inserted.inserted_id)
+        return inserted.inserted_id
 
     def find(self, criteria, collection_name, projection=None, sort=None, limit=0, cursor=False):  # find all from db
         if "_id" in criteria:
