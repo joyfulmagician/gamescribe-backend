@@ -54,7 +54,6 @@ def generate_content():
     message_list = data["message_list"]
     last_content = data["last_content"]
     content = GenerateContent.generate_content(message_list, last_content)
-    print(f"=======generated content length: {len(content)}")
     return {
         "result" : content
     }, 200
@@ -64,7 +63,6 @@ def generate_question():
     data = request.get_json()
     message_list = data["message_list"]
     content = GenerateContent.generate_question(message_list)
-    print(f"=======generated question : {content}")
     return {
         "result" : content
     }, 200

@@ -8,6 +8,7 @@ class Monsters(object):
 
         self.fields = {
             "content": "string",
+            "prompt": "array",
             "created_at": "datetime",
             "updated_at": "datetime"
         }
