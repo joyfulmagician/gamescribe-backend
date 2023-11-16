@@ -33,7 +33,80 @@ quiz_sample_message = [
     },
 ]
 
-content_prompt = "You are a monster content generator. You can create descriptions and stat blocks with html styled code using tailwind css or desired CSS. When you create a description, you have to include the stat block. For the ability part, you can use short words like 'Str', 'Dex' for 'Strength', 'Dexterity' and so on. If you get additional features, you can update the monster content."
+content_prompt = "You are a monster content generator. You can create descriptions and stat blocks. When you create a description, you have to include the stat and ability block. Also you should include the 'Action', 'Legendary Actions' section. For the ability part, you can use short words like 'Str', 'Dex' for 'Strength', 'Dexterity' and so on. If you get additional features, you can update the monster content. You have to format the monster content in a homebrewery markdown. If you can't generate the monster content, answer is empty string."
+
+markdown_sample = """
+## Forest Guardian
+
+*Large fey, neutral*
+
+---
+
+###
+
+- **Armor Class** 17 (natural armor)
+- **Hit Points** 136 (13d10 + 65)
+- **Speed** 40 ft.
+
+---
+
+###
+
+|STR|DEX|CON|INT|WIS|CHA|
+|-|-|-|-|-|-|
+|20 (+5)|16 (+3)|20 (+5)|14 (+2)|18 (+4)|16 (+3)|
+
+---
+
+###
+
+- **Skills** Perception +8, Stealth +6
+- **Damage Resistances** bludgeoning, piercing, and slashing damage from nonmagical attacks
+- **Damage Immunities** poison
+- **Condition Immunities** poisoned
+- **Senses** darkvision 60 ft., passive Perception 18
+- **Languages** Sylvan, Elvish
+- **Challenge** 9 (5,000 XP)
+
+---
+
+###
+
+***Innate Spellcasting.*** The forest guardian's innate spellcasting ability is Wisdom (spell save DC 16). It can innately cast the following spells, requiring no material components:
+
+- At will: *druidcraft, entangle, pass without trace*
+- 3/day each: *call lightning, barkskin*
+- 1/day: *plant growth*
+
+***Tree Stride.*** Once on its turn, the forest guardian can use 10 feet of its movement to step magically into one living tree within its reach and emerge from a second living tree within 60 feet of the first tree, appearing in an unoccupied space within 5 feet of the second tree. Both trees must be Large or bigger.
+
+***Regeneration.*** The forest guardian regains 10 hit points at the start of its turn if it has at least 1 hit point.
+
+***Spellbreaker.*** The forest guardian has advantage on saving throws against spells and other magical effects.
+
+---
+
+### Actions
+
+***Multiattack.*** The forest guardian makes two attacks: one with its *wooden club* and one with its *thorny vine whip*.
+
+***Wooden Club.*** *Melee Weapon Attack:* +9 to hit, reach 10 ft., one target. *Hit:* 14 (2d8 + 5) bludgeoning damage.
+
+***Thorny Vine Whip.*** *Melee Weapon Attack:* +9 to hit, reach 15 ft., one target. *Hit:* 14 (2d8 + 5) slashing damage plus 7 (2d6) poison damage, and the target must succeed on a DC 16 Constitution saving throw or become poisoned for 1 minute. The target can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success.
+
+---
+
+### Legendary Actions
+
+The forest guardian can take 3 legendary actions, choosing from the options below. Only one legendary action option can be used at a time and only at the end of another creature's turn. The forest guardian regains spent legendary actions at the start of its turn.
+
+***Wooden Club.*** The forest guardian makes a wooden club attack.
+
+***Entwining Roots (Costs 2 Actions).*** The forest guardian magically causes grass and vines to grow rapidly from the ground in a 20-foot radius centered on itself. The area becomes difficult terrain, and any creature that starts its turn in the area must succeed on a DC 16 Strength saving throw or have its speed reduced to 0 until the start of its next turn.
+
+***Healing Surge (Costs 3 Actions).*** The forest guardian regains 30 hit points.
+"""
+
 content_sample_message = [
     {
         "role": "system",
@@ -41,153 +114,7 @@ content_sample_message = [
     },
     {
         "role": "user",
-        "content": """Hello! I need you to generate monster content and return it to me as html code. Here's an example: If I give you liek that: 'Monster live in forest and have wings', I need you to say : 
-            <div class="text-left">
-                <div class="monster-title mb-4">Winged Beast</div>
-                <div class="monster-subtitle">This monstrous creature has a pair of large, leathery wings that span an impressive distance. It uses these wings to soar through the skies with incredible speed and agility.</div>
-
-                <div class="section-body">
-                    <hr class="section-divider mt-5 mb-5">
-
-                    <div class="flex gap-4 item-start mt-2">
-                        <span class="stat-title">Armor Class</span>
-                        <span class="stat-subtitle">22</span>
-                    </div>
-        
-                    <div class="flex gap-4 item-start mt-2">
-                        <span class="stat-title">Hit Points</span>
-                        <span class="stat-subtitle">370 % (21d20 + 146)</span>
-                    </div>
-        
-                    <div class="flex gap-4 item-start mt-2">
-                        <span class="stat-title">Speed</span>
-                        <span class="stat-subtitle">40 ft., fly 80 ft., swim 40 ft.</span>
-                    </div>
-                </div>
-
-                <div class="section-body">
-                    <div class="section-title">
-                        Abilities
-                    </div>
-
-                    <hr class="section-divider mt-5 mb-5">
-
-                    <div class="ability">
-                        <div class="stat-title ability-label">Str</div>
-                        <div class="stat-subtitle">18 (+4)</div>
-                    </div>
-                    <div class="ability">
-                        <div class="stat-title ability-label">Dex</div>
-                        <div class="stat-subtitle">16 (+3)</div>
-                    </div>
-                    <div class="ability">
-                        <div class="stat-title ability-label">Con</div>
-                        <div class="stat-subtitle">16 (+3)</div>
-                    </div>
-                    <div class="ability">
-                        <div class="stat-title ability-label">Int</div>
-                        <div class="stat-subtitle">10 (+0)</div>
-                    </div>
-                    <div class="ability">
-                        <div class="stat-title ability-label">Wis</div>
-                        <div class="stat-subtitle">12 (+1)</div>
-                    </div>
-                    <div class="ability">
-                        <div class="stat-title ability-label">Cha</div>
-                        <div class="stat-subtitle">8 (-1)</div>
-                    </div>
-                </div>
-
-                <div class="section-body">
-                    <hr class="section-divider mt-5 mb-5">
-
-                    <div class="flex gap-4 item-start mt-2">
-                        <span class="stat-title">Alignment</span>
-                        <span class="stat-subtitle">Chaotic Evil</span>
-                    </div>
-
-                    <div class="flex gap-4 item-start mt-2">
-                        <span class="stat-title">Skills</span>
-                        <span class="stat-subtitle">Perception +5, Stealth +6</span>
-                    </div>
-
-                    <div class="flex gap-4 item-start mt-2">
-                        <span class="stat-title">Damage Resistances</span>
-                        <span class="stat-subtitle">Bludgeoning, Piercing, and Slashing from Nonmagical Attacks</span>
-                    </div>
-
-                    <div class="flex gap-4 item-start mt-2">
-                        <span class="stat-title">Damage Immunities</span>
-                        <span class="stat-subtitle">Poison</span>
-                    </div>
-
-                    <div class="flex gap-4 item-start mt-2">
-                        <span class="stat-title">Condition Immunities</span>
-                        <span class="stat-subtitle">Charmed, Deafened, Frightened, Petrified, Prone</span>
-                    </div>
-
-                    <div class="flex gap-4 item-start mt-2">
-                        <span class="stat-title">Senses</span>
-                        <span class="stat-subtitle">Darkvision 60 ft., passive Perception 15</span>
-                    </div>
-
-                    <div class="flex gap-4 item-start mt-2">
-                        <span class="stat-title">Languages</span>
-                        <span class="stat-subtitle">Common, Draconic</span>
-                    </div>
-
-                    <div class="flex gap-4 item-start mt-2">
-                        <span class="stat-title">Challenge</span>
-                        <span class="stat-subtitle">5 (1,800 XP)</span>
-                    </div>
-                </div>
-
-                <div class="section-body">
-                    <div class="section-title">
-                        Actions
-                    </div>
-
-                    <hr class="section-divider mt-5 mb-5">
-
-                    <div class="mt-2">
-                        <span class="stat-title action-title">Multiattack (Vampire Form Only).</span>
-                        <span class="stat-subtitle">Strahd makes three attacks, only one of which can be a bite attack.</span>
-                    </div>
-
-                    <div class="mt-2">
-                        <span class="stat-title action-title">Scimitar.</span>
-                        <span class="stat-subtitle">Melee Weapon Attack: +13 to hit, reach 10 ft., one target. Hit: 9 (3d6 + 10) slashing damage.</span>
-                    </div>
-
-                    <div class="mt-2">
-                        <span class="stat-title action-title">Cel Flamand.</span>
-                        <span class="stat-subtitle">Melee weapon attack: +13 to hit, reach 5 ft, one target, Hit: (3d4 + 16) Piercing Damage, and (2d6 + 8) Poison Damage</span>
-                    </div>
-
-                    <div class="mt-2">
-                        <span class="stat-title action-title">Claws.</span>
-                        <span class="stat-subtitle">Melee weapon attack: +9 to hit, reach 5 ft. one target, Hit: (2d4 +4) piercing damage. the target of this attack, when hit, must make a DC 15 CON save at the end of each of their turns to not take 2d4 damage from internal bleeding. if Strahd lands this attack from a flank, the creature must make a DC 12 CON save to suffer the paralyzed condition.</span>
-                    </div>
-
-                    <div class="mt-2">
-                        <span class="stat-title action-title">Bite.</span>
-                        <span class="stat-subtitle">Melee Weapon Attack: +10 to hit, reach 5 ft (can lunge upto 15 feet to bite), one willing creature, or a creature that is grappled, incapacitated, Stunned, Surprised or restrained. Hit: 7 (2d6 + 4) piercing damage plus 10 (3d6) necrotic damage. The target’s hit point maximum is reduced by an amount equal to the necrotic damage taken, and Strahd regains hit points equal to that amount. The reduction lasts until the target finishes a long rest. The target dies if its hit point maximum is reduced to 0. A humanoid slain in this way and then buried in the ground rises the following night as a vampire spawn under Strahd’s control.</span>
-                    </div>
-
-                    <div class="mt-2">
-                        <span class="stat-title action-title">Charm</span>
-                        <span class="stat-subtitle">Strahd targets one humanoid he can see within 30 feet of him. If the target can see Strahd, the target must succeed on a DC 19 Wisdom saving throw against this magic or be charmed. The charmed target regards Strahd as a trusted friend to be heeded and protected. The target isn’t under Strahd’s control, but it takes Strahd’s requests and actions in the most favorable way and lets Strahd bite it.
-                            
-                        Each time Strahd or his companions do anything harmful to the target, it can repeat the saving throw, ending the effect on itself on a success. Otherwise, the effect lasts 24 hours or until Strahd is destroyed, is on a different plane of existence than the target, or takes a bonus action to end the effect.</span>
-                    </div>
-
-                    <div class="mt-2">
-                        <span class="stat-title action-title">Children of the Night (1/Day).</span>
-                        <span class="stat-subtitle">Strahd magically calls 2d4 swarms of bats or swarms of rats. While outdoors, Strahd can call 3d6 wolves instead. The called creatures arrive in 1d4 rounds, acting as allies of Strahd and obeying his spoken commands. The beasts remain for 1 hour, until Strahd dies, or until he dismisses them as a bonus action.</span>
-                    </div>
-
-                </div>
-            </div> """
+        "content": f"Hello! I need you to generate monster content and return it to me as homebrewery markdown content. The homebrewery markdown content must start with &&& and end with &&&. Here's an example: If I give you like that: 'Monster live in forest', I need you to say like that: '&&&{markdown_sample}&&&'"
     },
     {
         "role": "assistant",
@@ -209,22 +136,17 @@ def generate_content(message_list, last_content):
     if response and response.choices:
         assistant_reply = response.choices[0].message["content"]
 
-        # html_code = re.search(pattern, assistant_reply, re.DOTALL)
-        start_index = assistant_reply.find('<div class="text-left">')
-        if start_index != -1:
-            end_index = assistant_reply.rfind("</div>", start_index)
+        print(f"=============Assistant reply: {assistant_reply}")
 
-            if end_index != -1:
-                html_code = assistant_reply[start_index:end_index + 6]
-                monster_item = { "content" : html_code }
-                monster_model.create(monster_item)
-                return html_code
-            else:
-                return ""
+        pattern = r'&&&(.*?)&&&'
+        result = re.search(pattern, assistant_reply, re.DOTALL)
+        if result:
+            monster_item = { "content": result.group(1), "prompt": message_list }
+            monster_model.create(monster_item)
+            print(f"----------------------Generated monster content: {result.group(1)}")
+            return result.group(1)
         else:
             return ""
-
-        # return assistant_reply
     else:
         return "Error"
 
