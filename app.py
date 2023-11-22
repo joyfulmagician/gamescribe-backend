@@ -5,6 +5,7 @@ from flask_cors import CORS
 from bson import ObjectId
 from datetime import datetime
 from controllers.user_controller import UserController
+from controllers.monster_controller import MonsterController
 
 import controllers.generate_content as GenerateContent
 
@@ -13,6 +14,7 @@ app = Flask(__name__)
 CORS(app, methods=['GET', 'POST'], allow_headers=['Content-Type'])
 
 userController = UserController()
+monsterController = MonsterController()
 
 # Encodeing the ObjectID and datetime fields as a JSON string
 class JSONEncoder(json.JSONEncoder):
@@ -73,6 +75,27 @@ def save_updated_content():
     message_list = data["message_list"]
     updated_content = data["updated_content"]
     res = GenerateContent.save_updated_content(message_list, updated_content )
+    return {
+        "result": res
+    }, 200
+
+@app.route('/hexagon_data', methods=['post'])
+def get_hexagon_data():
+    res = GenerateContent.get_hexagon_data()
+    return {
+        "result": res
+    }, 200
+
+@app.route('/create_hexagon', methods=['post'])
+def create_hexagon_data():
+    GenerateContent.create_hexagon_Data()
+    return {
+        "result": True
+    }, 200
+
+@app.route('/get/monsters', methods=['post'])
+def get_monster_data():
+    res = monsterController.get_monsters()
     return {
         "result": res
     }, 200

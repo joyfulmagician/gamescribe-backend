@@ -3,6 +3,7 @@ from os import environ
 from urllib.parse import urlparse
 from dotenv import dotenv_values
 from models.monsters import Monsters
+from models.hexagons import Hexagons
 
 import re
 import json
@@ -12,6 +13,7 @@ env_vars = dotenv_values('.env')
 openai.api_key = env_vars["OPENAI_API_KEY"]
 
 monster_model = Monsters()
+hexagon_model = Hexagons()
         
 key_array = ["Environment", "Size", "Appearance", "Attack Mode", "Movement Speed"]
 key_array = [str(item) for item in key_array]
@@ -172,3 +174,46 @@ def save_updated_content(message_list, updated_content):
     if inserted_id:
         return True
     return False
+
+def get_hexagon_data():
+    hexagon_data = hexagon_model.find({})
+    return hexagon_data
+
+def create_hexagon_Data():
+    data = [
+        {
+            "color": "#CFC38F",
+            "img_url": "/images/chat_dashboard.png"
+        },
+        {
+            "color": "#AC2AB8",
+            "img_url": "/images/chat_dashboard.png"
+        },
+        {
+            "color": "#442846",
+            "img_url": "/images/chat_dashboard.png"
+        },
+        {
+            "color": "#D8A539",
+            "img_url": "/images/chat_dashboard.png"
+        },
+        {
+            "color": "#82A2C9",
+            "img_url": "/images/chat_dashboard.png"
+        },
+        {
+            "color": "#CFC38F",
+            "img_url": "/images/chat_dashboard.png"
+        },
+        {
+            "color": "#442846",
+            "img_url": "/images/chat_dashboard.png"
+        }
+    ]
+
+    for item in data:
+        res = hexagon_model.create(item)
+
+    return True
+        
+
