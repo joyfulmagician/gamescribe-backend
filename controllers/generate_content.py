@@ -178,42 +178,61 @@ def save_updated_content(message_list, updated_content):
 def get_hexagon_data():
     hexagon_data = hexagon_model.find({})
     return hexagon_data
+#  type= :
+#  Monster:MO
+#  Character:CH
+#  Spell:SP
+#  Background:BG
+#  Item:IT
+#  Location:LO
+#  Equipment:EQ
 
 def create_hexagon_Data():
     data = [
         {
             "color": "#CFC38F",
-            "img_url": "/images/chat_dashboard.png"
+            "img_url": "/static/hexagons/monster/D3monSl4yer_a_real_person_playing_DD_transforming_into_the_char_6601780c-38ab-4524-a751-59ad6cb8a2e1.png",
+            "type": "MO",
         },
         {
             "color": "#AC2AB8",
-            "img_url": "/images/chat_dashboard.png"
+            "img_url": "/static/hexagons/character/D3monSl4yer_autonomous_TTRPG_gamemaster_131d39e5-0d5b-4e98-8ff9-fcba28b902e5.png",
+            "type": "CH"
         },
         {
             "color": "#442846",
-            "img_url": "/images/chat_dashboard.png"
+            "img_url": "",
+            "type": "SP"
         },
         {
             "color": "#D8A539",
-            "img_url": "/images/chat_dashboard.png"
+            "img_url": "/static/hexagons/background/D3monSl4yer_a_collage_of_various_DD_characters_representing_man_38a575e6-3241-4396-bb02-2a859b1442a3.png",
+            "type": "BG"
         },
         {
             "color": "#82A2C9",
-            "img_url": "/images/chat_dashboard.png"
+            "img_url": "/static/hexagons/item/D3monSl4yer_a_meticulously_designed_dark_steel_sword_with_intri_336c8f14-e342-4d66-93b8-771124ba38f0.png",
+            "type": "IT"
         },
         {
             "color": "#CFC38F",
-            "img_url": "/images/chat_dashboard.png"
+            "img_url": "/static/hexagons/location/D3monSl4yer_concept_art_of_Neverwinter_on_the_sword_coast_in_fa_7d4e1e91-03ca-4239-8547-8a72f91990dd.png",
+            "type": "LO"
         },
         {
             "color": "#442846",
-            "img_url": "/images/chat_dashboard.png"
+            "img_url": "",
+            "type": "EQ"
         }
     ]
 
     for item in data:
         res = hexagon_model.create(item)
 
+    return True
+
+def create_hexagon_Datum(data):
+    res = hexagon_model.create(data)
     return True
         
 

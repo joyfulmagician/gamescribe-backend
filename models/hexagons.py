@@ -1,5 +1,4 @@
 from db.database import Database
-
 class Hexagons(object):
     def __init__(self) -> None:
         self.db = Database()
@@ -9,7 +8,15 @@ class Hexagons(object):
         self.fields = {
             "color": "string",
             "img_url": "string",
-            "monster_id": "string",
+            "type":"string", 
+            #  type= :
+            #  Monster:MO
+            #  Character:CH
+            #  Spell:SP
+            #  Background:BG
+            #  Item:IT
+            #  Location:LO
+            #  Equipment:EQ
             "created_at": "datetime",
             "updated_at": "datetime"
         }

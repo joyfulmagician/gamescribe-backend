@@ -93,6 +93,14 @@ def create_hexagon_data():
         "result": True
     }, 200
 
+@app.route('/create_hexagon_one', methods=['post'])
+def create_hexagon_datum():
+    data = request.get_json()
+    GenerateContent.create_hexagon_Datum(data)
+    return {
+        "result": True
+    }, 200
+
 @app.route('/get/monsters', methods=['post'])
 def get_monster_data():
     res = monsterController.get_monsters()
